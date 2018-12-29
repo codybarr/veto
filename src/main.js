@@ -13,6 +13,8 @@ Vue.use(Buefy, {
 // Filters
 import '@/filters/poster.filter'
 
+import '@/registerServiceWorker'
+
 Vue.config.productionTip = false
 
 new Vue({
