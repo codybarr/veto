@@ -4,7 +4,7 @@
 			<!-- <b-loading :active.sync="loading" :is-full-page="false"></b-loading> -->
 			<transition-group name="list" class="columns is-multiline block" tag="div">
 				<div v-for="movie of movies" :key="movie.id" class="column is-one-quarter has-text-centered">
-					<Tile :movie="movie" :selected="true" :veto="true" />
+					<Tile :movie="movie" :selected="true" :veto="true"/>
 				</div>
 			</transition-group>
 		</div>
@@ -23,6 +23,9 @@ export default {
 	computed: {
 		movies() {
 			return store.getters.SELECTED_MOVIES
+		},
+		announceWinner() {
+			return store.getters.ANNOUNCE_WINNER
 		}
 	}
 }

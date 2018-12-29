@@ -2,8 +2,14 @@
 	<transition name="fade" mode="out-in">
 		<section class="ns-tile block">
 			<!-- <div :style="imgStyle" :class="['shrink', 'poster-tile', 'block', { 'selected': isSelected }]" @click="addOrRemove">
-			</div> -->
-			<img :src="movie.poster_path | poster" :class="['shrink', 'poster-tile', 'block', { 'selected': isSelected }]" @click="addOrRemove">
+			</div>-->
+			<b-tooltip :label="movie.title" type="is-dark" position="is-top">
+				<img
+					:src="movie.poster_path | poster"
+					:class="['shrink', 'poster-tile', 'block', { 'selected': isSelected }]"
+					@click="addOrRemove"
+				>
+			</b-tooltip>
 		</section>
 	</transition>
 </template>
@@ -17,8 +23,8 @@ export default {
 	props: ['movie', 'selected', 'veto'],
 	methods: {
 		addOrRemove() {
-			let { id, poster_path } = this.movie
-			store.dispatch('TOGGLE_MOVIE', { id, poster_path })
+			let { id, title, poster_path } = this.movie
+			store.dispatch('TOGGLE_MOVIE', { id, title, poster_path })
 		}
 	},
 	computed: {
@@ -27,7 +33,8 @@ export default {
 		},
 		imgStyle() {
 			return {
-				backgroundImage: 'url(' + POSTER_BASE_URL + this.movie.poster_path + ')'
+				backgroundImage:
+					'url(' + POSTER_BASE_URL + this.movie.poster_path + ')'
 			}
 		}
 	}
@@ -36,6 +43,12 @@ export default {
 
 <style lang="scss" scoped>
 .poster-tile {
+	background-color: rgba(0, 0, 0, 0.45);
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.35);
+
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .shrink {

@@ -11,8 +11,10 @@ const axios = Axios.create({
 	params: {
 		api_key: process.env.VUE_APP_TMDB_API_KEY,
 		certification_country: 'US',
-		sort_by: 'popularity.desc'
-		// sort_by: 'release_date.asc'
+		sort_by: 'popularity.desc',
+		// sort_by: 'release_date.desc',
+		include_adult: false,
+		'primary_release_date.lte': new Date()
 	}
 	// headers: { 'X-Custom-Header': 'foobar' }
 })
@@ -20,7 +22,8 @@ const axios = Axios.create({
 export default new Vuex.Store({
 	state: {
 		searchResults: [],
-		selectedMovies: JSON.parse(localStorage.getItem('movies')) || []
+		selectedMovies: JSON.parse(localStorage.getItem('movies')) || [],
+		announceWinner: false
 	},
 	getters: {
 		SEARCH_RESULTS: state => {
@@ -28,6 +31,9 @@ export default new Vuex.Store({
 		},
 		SELECTED_MOVIES: state => {
 			return state.selectedMovies
+		},
+		ANNOUNCE_WINNER: state => {
+			return state.announceWinner
 		}
 	},
 	mutations: {
@@ -43,6 +49,9 @@ export default new Vuex.Store({
 				selectedMovie => selectedMovie.id !== movie.id
 			)
 			localStorage.setItem('movies', JSON.stringify(state.selectedMovies))
+			if (state.selectedMovies.length === 1) {
+				state.announceWinner = true
+			}
 		}
 	},
 	actions: {
@@ -58,14 +67,14 @@ export default new Vuex.Store({
 		SEARCH_KID_MOVIES: async (context, payload) => {
 			let { data } = await axios.get('/search/movie', {
 				params: {
-					certification: 'G',
-					// 'certification.lte': 'PG',
+					// certification: 'G',
+					'certification.lte': 'PG',
 					query: payload
 				}
 			})
 			context.commit('SET_SEARCH_RESULTS', data.results)
 		},
-		TOGGLE_MOVIE: ({ commit, state }, movie) => {
+		TOGGLE_MOVIE: ({ dispatch, commit, state }, movie) => {
 			let found = state.selectedMovies
 				.map(selectedMovie => selectedMovie.id)
 				.indexOf(movie.id)

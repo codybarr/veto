@@ -1,18 +1,27 @@
 <template>
-	<section class="section">
+	<div class="container is-fluid">
 		<div class="field is-grouped">
-			<input class="input is-large block" type="text" placeholder="Search for movies!" v-model="searchQuery" @keyup.enter="query">
+			<input
+				class="input is-large block"
+				type="text"
+				placeholder="Search for movies!"
+				v-model="searchQuery"
+				@keyup.enter="query"
+			>
 		</div>
 
-		<div class="container is-fullhd">
-			<!-- <b-loading :active.sync="loading" :is-full-page="false"></b-loading> -->
-			<div class="columns is-multiline block">
-				<div v-for="result of results" :key="result.id" class="column is-one-quarter has-text-centered" v-if="result.poster_path">
-					<Tile :movie="result" :selected="movieSelected(result)" :veto="false" />
-				</div>
+		<!-- <b-loading :active.sync="loading" :is-full-page="false"></b-loading> -->
+		<div class="columns is-multiline block is-centered">
+			<div
+				v-for="result of results"
+				:key="result.id"
+				class="column is-narrow has-text-centered"
+				v-if="result.poster_path"
+			>
+				<Tile :movie="result" :selected="movieSelected(result)" :veto="false"/>
 			</div>
 		</div>
-	</section>
+	</div>
 </template>
 
 <script>

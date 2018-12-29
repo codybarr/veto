@@ -3,6 +3,7 @@
 		<transition name="fade" mode="out-in">
 			<router-view></router-view>
 		</transition>
+		<google-cast-launcher></google-cast-launcher>
 	</div>
 </template>
 
